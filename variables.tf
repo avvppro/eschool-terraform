@@ -9,6 +9,14 @@ variable "stage" {
 }
 variable "allocation_id_be_balancer_ip" {
   default = {
+    "development" = "eipalloc-05c056dea131007bd"
+    "testing"     = "eipalloc-05c056dea131007bd"
+    "staging"     = "eipalloc-05c056dea131007bd"
+    "production"  = "eipalloc-05c056dea131007bd"
+  }
+}
+variable "allocation_id_fe_balancer_ip" {
+  default = {
     "development" = "eipalloc-0005839cfbe62d860"
     "testing"     = "eipalloc-0005839cfbe62d860"
     "staging"     = "eipalloc-0005839cfbe62d860"
@@ -40,6 +48,15 @@ variable "allow_ports_backend" {
     "testing"     = ["22", "8080"]
     "staging"     = ["8080"]
     "production"  = ["8080"]
+  }
+}
+variable "allow_ports_frontend" {
+  type = map
+  default = {
+    "development" = ["22", "80", "443"]
+    "testing"     = ["22", "80", "443"]
+    "staging"     = ["80", "443"]
+    "production"  = ["80", "443"]
   }
 }
 variable "allow_ports_proxy" {
@@ -84,8 +101,17 @@ variable "backend1_priv_ip" {
 variable "backend2_priv_ip" {
   default = "192.168.33.52"
 }
-variable "backend_proxy_priv_ip" {
+variable "backend_balancer_priv_ip" {
   default = "192.168.33.150"
+}
+variable "frontend1_priv_ip" {
+  default = "192.168.33.201"
+}
+variable "frontend2_priv_ip" {
+  default = "192.168.33.202"
+}
+variable "frontend_balancer_priv_ip" {
+  default = "192.168.33.250"
 }
 variable "common_tags" {
   type = map

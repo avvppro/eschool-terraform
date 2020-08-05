@@ -58,9 +58,48 @@ resource "aws_instance" "be_balancer" {
   availability_zone = data.aws_availability_zones.available.names[0]
   security_groups = [aws_security_group.for_proxy.id]
   subnet_id       = aws_subnet.internal_access.id
-  private_ip      = var.backend_proxy_priv_ip
+  private_ip      = var.backend_balancer_priv_ip
   user_data       = file("be_balancer_vm.sh")
   key_name        = "avvppro-Frankfurt-key"
   tags = merge(var.common_tags, map("Stage", "${var.stage}"), map("Name", "BE-balancer"))
+
+}
+#----------------------------instance frontend1----------------------------------------------
+resource "aws_instance" "frontend1" {
+  ami           = data.aws_ami.latest_amazon_linux.id
+  instance_type = "t2.small" 
+  availability_zone = data.aws_availability_zones.available.names[0]
+  security_groups = [aws_security_group.for_frontend.id]
+  subnet_id       = aws_subnet.internal_access.id
+  private_ip      = var.frontend1_priv_ip
+  user_data       = file("fe_vm.sh")
+  key_name        = "avvppro-Frankfurt-key"
+  tags = merge(var.common_tags, map("Stage", "${var.stage}"), map("Name", "Frontend1"))
+
+}
+#----------------------------instance frontend2----------------------------------------------
+resource "aws_instance" "frontend2" {
+  ami           = data.aws_ami.latest_amazon_linux.id
+  instance_type = "t2.small" 
+  availability_zone = data.aws_availability_zones.available.names[0]
+  security_groups = [aws_security_group.for_frontend.id]
+  subnet_id       = aws_subnet.internal_access.id
+  private_ip      = var.frontend2_priv_ip
+  user_data       = file("fe_vm.sh")
+  key_name        = "avvppro-Frankfurt-key"
+  tags = merge(var.common_tags, map("Stage", "${var.stage}"), map("Name", "Frontend2"))
+
+}
+#----------------------------instance fe balancer----------------------------------------------
+resource "aws_instance" "fe_balancer" {
+  ami           = data.aws_ami.latest_amazon_linux.id
+  instance_type = lookup(var.instance_type, var.stage) 
+  availability_zone = data.aws_availability_zones.available.names[0]
+  security_groups = [aws_security_group.for_proxy.id]
+  subnet_id       = aws_subnet.internal_access.id
+  private_ip      = var.frontend_balancer_priv_ip
+  user_data       = file("fe_balancer_vm.sh")
+  key_name        = "avvppro-Frankfurt-key"
+  tags = merge(var.common_tags, map("Stage", "${var.stage}"), map("Name", "FE-balancer"))
 
 }

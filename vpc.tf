@@ -29,7 +29,12 @@ resource "aws_subnet" "internal_access" {
   tags                    = merge(var.common_tags, map("Stage", "${var.stage}"), map("Name", "subnet for zone 0"))
 }
 #-----------------------------eip association for BE balancer-----------------------------------
-resource "aws_eip_association" "eip_assoc" {
+resource "aws_eip_association" "eip_assoc_be" {
   instance_id   = aws_instance.be_balancer.id
   allocation_id = lookup(var.allocation_id_be_balancer_ip, var.stage)
+}
+#-----------------------------eip association for FE balancer-----------------------------------
+resource "aws_eip_association" "eip_assoc_fe" {
+  instance_id   = aws_instance.fe_balancer.id
+  allocation_id = lookup(var.allocation_id_fe_balancer_ip, var.stage)
 }
