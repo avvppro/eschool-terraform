@@ -62,7 +62,7 @@ variable "allow_ports_frontend" {
 variable "allow_ports_proxy" {
   type = map
   default = {
-    "development" = ["22", "80", "8080"]
+    "development" = ["22", "80", "8080", "443"]
     "testing"     = ["22", "80"]
     "staging"     = ["80"]
     "production"  = ["80"]

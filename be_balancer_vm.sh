@@ -13,7 +13,6 @@ nginx_config() {
         server 192.168.33.52:8080;
     }
     server {
-        listen       80;
         server_name  192.168.33.150;
         location /{
             proxy_pass http://backend;

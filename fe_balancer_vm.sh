@@ -13,7 +13,6 @@ nginx_config() {
         server 192.168.33.202:80;
     }
     server {
-        listen       80;
         server_name  avvppro.xyz www.avvppro.xyz;
         location /{
             proxy_pass http://frontend;
@@ -23,6 +22,13 @@ _EOF
     sudo mv ./frontend_lb.conf /etc/nginx/conf.d/
     sudo systemctl start nginx
     sudo systemctl enable nginx
+}
+ssl_certificate{
+    sudo yum install https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm -y
+    sudo yum install certbot python2-certbot-nginx -y
+    sudo certbot --nginx --non-interactive --agree-tos -m avvppro@gmail.com --domains avvppro.xyz
+    sudo echo "0 0,12 * * * root python -c 'import random; import time; time.sleep(random.random() * 3600)'\
+     && certbot renew -q" | sudo tee -a /etc/crontab > /dev/null
 }
 software_install
 nginx_config
