@@ -44,13 +44,13 @@ resource "aws_security_group" "for_backend" {
   }
   tags = merge(var.common_tags, map("Stage", "${var.stage}"), map("Name", "Backend-SG"))
 }
-#-------------security group for proxy-------------
-resource "aws_security_group" "for_proxy" {
-  name        = "group_for_proxy"
-  description = "proxy SG"
+#-------------security group for be balancer-------------
+resource "aws_security_group" "for_be_balancer" {
+  name        = "group_for_be_balancer"
+  description = "be_balancer SG"
   vpc_id      = aws_vpc.vpc0.id
   dynamic "ingress" {
-    for_each = lookup(var.allow_ports_proxy, var.stage)
+    for_each = lookup(var.allow_ports_be_balancer, var.stage)
     content {
       description = "Ingress port open"
       from_port   = ingress.value
@@ -65,7 +65,7 @@ resource "aws_security_group" "for_proxy" {
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
   }
-  tags = merge(var.common_tags, map("Stage", "${var.stage}"), map("Name", "Proxy-SG"))
+  tags = merge(var.common_tags, map("Stage", "${var.stage}"), map("Name", "BE-balancer-SG"))
 }
 #-------------security group for frontend-------------
 resource "aws_security_group" "for_frontend" {
@@ -89,4 +89,27 @@ resource "aws_security_group" "for_frontend" {
     cidr_blocks = ["0.0.0.0/0"]
   }
   tags = merge(var.common_tags, map("Stage", "${var.stage}"), map("Name", "Frontend-SG"))
+}
+#-------------security group for fe balancer-------------
+resource "aws_security_group" "for_fe_balancer" {
+  name        = "group_for_fe_balancer"
+  description = "fe_balancer SG"
+  vpc_id      = aws_vpc.vpc0.id
+  dynamic "ingress" {
+    for_each = lookup(var.allow_ports_fe_balancer, var.stage)
+    content {
+      description = "Ingress port open"
+      from_port   = ingress.value
+      to_port     = ingress.value
+      protocol    = "tcp"
+      cidr_blocks = ["0.0.0.0/0"]
+    }
+  }
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+  tags = merge(var.common_tags, map("Stage", "${var.stage}"), map("Name", "FE-balancer-SG"))
 }

@@ -23,7 +23,7 @@ _EOF
     sudo systemctl start nginx
     sudo systemctl enable nginx
 }
-ssl_certificate{
+ssl_certificate() {
     sudo yum install https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm -y
     sudo yum install certbot python2-certbot-nginx -y
     sudo certbot --nginx --non-interactive --agree-tos -m avvppro@gmail.com --domains avvppro.xyz
@@ -32,3 +32,4 @@ ssl_certificate{
 }
 software_install
 nginx_config
+ssl_certificate

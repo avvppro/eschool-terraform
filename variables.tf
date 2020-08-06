@@ -2,7 +2,7 @@ variable "region" {
   default = "eu-central-1"
 }
 variable "stage" {
-  default = "development"
+   default = "development"
   # default = "testing"
   # default = "staging"
   # default = "production"
@@ -27,16 +27,24 @@ variable "allocation_id_fe_balancer_ip" {
 variable "instance_type" {
   default = {
     "development" = "t2.micro"
-    "testing"     = "t3.micro"
+    "testing"     = "t2.micro"
     "staging"     = "t2.small"
-    "production"  = "t3.small"
+    "production"  = "t2.small"
+  }
+}
+variable "instance_type_fe" {
+  default = {
+    "development" = "t2.small"
+    "testing"     = "t2.small"
+    "staging"     = "t2.medium"
+    "production"  = "t2.medium"
   }
 }
 variable "allow_ports_database" {
   type = map
   default = {
-    "development" = ["22", "3306"]
-    "testing"     = ["22", "3306"]
+    "development" = ["3306", "22"]
+    "testing"     = ["3306", "22"]
     "staging"     = ["3306"]
     "production"  = ["3306"]
   }
@@ -53,19 +61,28 @@ variable "allow_ports_backend" {
 variable "allow_ports_frontend" {
   type = map
   default = {
-    "development" = ["22", "80", "443"]
-    "testing"     = ["22", "80", "443"]
+    "development" = ["80", "443", "22"]
+    "testing"     = ["80", "443", "22"]
     "staging"     = ["80", "443"]
     "production"  = ["80", "443"]
   }
 }
-variable "allow_ports_proxy" {
+variable "allow_ports_be_balancer" {
   type = map
   default = {
-    "development" = ["22", "80", "8080", "443"]
+    "development" = ["22", "80", "8080"]
     "testing"     = ["22", "80"]
-    "staging"     = ["80"]
+    "staging"     = ["22", "80"]
     "production"  = ["80"]
+  }
+}
+variable "allow_ports_fe_balancer" {
+  type = map
+  default = {
+    "development" = ["22", "80", "443"]
+    "testing"     = ["22", "80", "443"]
+    "staging"     = ["22", "80", "443"]
+    "production"  = ["80", "443"]
   }
 }
 variable "allow_cidr_blocks" {
@@ -73,8 +90,8 @@ variable "allow_cidr_blocks" {
   default = {
     "development" = ["0.0.0.0/0"]
     "testing"     = ["0.0.0.0/0"]
-    "staging"     = ["192.168.0.0/16"]
-    "production"  = ["192.168.0.0/16"]
+    "staging"     = ["0.0.0.0/0"]
+    "production"  = ["0.0.0.0/0"]
   }
 }
 variable "get_pub_ip_vpc0" {
@@ -82,8 +99,8 @@ variable "get_pub_ip_vpc0" {
   default = {
     "development" = true
     "testing"     = true
-    "staging"     = false
-    "production"  = false
+    "staging"     = true
+    "production"  = true
   }
 }
 variable "vpc0_cidr" {
