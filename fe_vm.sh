@@ -1,6 +1,6 @@
 #!/bin/bash
 set_variables() {
-    backend_balancer_ip="52.29.180.149"
+    backend_balancer_address="backend-eschool.tk"
 }
 software_install() {
     sudo yum update -y
@@ -14,7 +14,7 @@ frontend_config() {
     sudo setenforce 0
     sudo sed -i 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/selinux/config
     git clone https://github.com/avvppro/final_project.git
-    sed -i "s/192.168.33.200/$backend_balancer_ip/g" ./final_project/src/app/services/token-interceptor.service.ts 
+    sed -i "s%http://192.168.33.200%https://$backend_balancer_address%g" ./final_project/src/app/services/token-interceptor.service.ts 
     cd final_project/
     sudo npm install -g @angular/cli@7.0.7 
     sudo npm install --save-dev  --unsafe-perm node-sass

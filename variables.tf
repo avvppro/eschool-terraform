@@ -70,10 +70,10 @@ variable "allow_ports_frontend" {
 variable "allow_ports_be_balancer" {
   type = map
   default = {
-    "development" = ["22", "80", "8080"]
-    "testing"     = ["22", "80"]
-    "staging"     = ["22", "80"]
-    "production"  = ["80"]
+    "development" = ["22", "80", "8080", "443"]
+    "testing"     = ["22", "80", "443"]
+    "staging"     = ["22", "80", "443"]
+    "production"  = ["80", "443"]
   }
 }
 variable "allow_ports_fe_balancer" {

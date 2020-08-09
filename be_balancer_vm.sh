@@ -13,7 +13,7 @@ nginx_config() {
         server 192.168.33.52:8080;
     }
     server {
-        server_name  192.168.33.150;
+        server_name  backend-eschool.tk;
         location /{
             proxy_pass http://backend;
         }
@@ -23,5 +23,13 @@ _EOF
     sudo systemctl start nginx
     sudo systemctl enable nginx
 }
+ssl_certificate() {
+    sudo yum install https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm -y
+    sudo yum install certbot python2-certbot-nginx -y
+    sudo certbot --nginx --non-interactive --agree-tos -m avvppro@gmail.com --domains backend-eschool.tk
+    sudo echo "0 0,12 * * * root python -c 'import random; import time; time.sleep(random.random() * 3600)'\
+     && certbot renew -q" | sudo tee -a /etc/crontab > /dev/null
+}
 software_install
 nginx_config
+ssl_certificate
