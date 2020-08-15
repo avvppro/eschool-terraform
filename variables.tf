@@ -8,74 +8,45 @@ variable "stage" {
   # default = "production"
 }
 variable "allocation_id_be_balancer_ip" {
-  default = {
-    "development" = "eipalloc-05c056dea131007bd"
-    "testing"     = "eipalloc-05c056dea131007bd"
-    "staging"     = "eipalloc-05c056dea131007bd"
-    "production"  = "eipalloc-05c056dea131007bd"
-  }
+  default =  "eipalloc-090cd36d3c083b996"
 }
 variable "allocation_id_fe_balancer_ip" {
-  default = {
-    "development" = "eipalloc-0005839cfbe62d860"
-    "testing"     = "eipalloc-0005839cfbe62d860"
-    "staging"     = "eipalloc-0005839cfbe62d860"
-    "production"  = "eipalloc-0005839cfbe62d860"
-  }
+  default =  "eipalloc-026262fb6b7bc7208"
+}
+variable "allocation_id_bamboo_ip" {
+  default =  "eipalloc-033753e44c42dbe5a"
 }
 
 variable "instance_type" {
   default = {
     "development" = "t2.micro"
-    "testing"     = "t3.micro"
-    "staging"     = "t2.small"
+    "testing"     = "t2.micro"
+    "staging"     = "t3.micro"
+    "production"  = "t3.micro"
+  }
+}
+variable "instance_type_bamboo" {
+  default = {
+    "development" = "t2.small"
+    "testing"     = "t2.small"
+    "staging"     = "t3.small"
     "production"  = "t3.small"
   }
 }
 variable "allow_ports_database" {
-  type = map
-  default = {
-    "development" = ["22", "3306"]
-    "testing"     = ["22", "3306"]
-    "staging"     = ["3306"]
-    "production"  = ["3306"]
-  }
+  default =  ["22", "3306"]
 }
 variable "allow_ports_backend" {
-  type = map
-  default = {
-    "development" = ["22", "8080"]
-    "testing"     = ["22", "8080"]
-    "staging"     = ["8080"]
-    "production"  = ["8080"]
-  }
+  default =  ["22", "8080"]
 }
 variable "allow_ports_frontend" {
-  type = map
-  default = {
-    "development" = ["22", "80", "443"]
-    "testing"     = ["22", "80", "443"]
-    "staging"     = ["80", "443"]
-    "production"  = ["80", "443"]
-  }
+  default =  ["22", "80", "443"]
 }
-variable "allow_ports_proxy" {
-  type = map
-  default = {
-    "development" = ["22", "80", "8080"]
-    "testing"     = ["22", "80"]
-    "staging"     = ["80"]
-    "production"  = ["80"]
-  }
+variable "allow_ports_balancer" {
+  default =  ["22", "80", "443"]
 }
-variable "allow_cidr_blocks" {
-  type = map
-  default = {
-    "development" = ["0.0.0.0/0"]
-    "testing"     = ["0.0.0.0/0"]
-    "staging"     = ["192.168.0.0/16"]
-    "production"  = ["192.168.0.0/16"]
-  }
+variable "allow_ports_bamboo" {
+  default =  ["22", "80", "8085"]
 }
 variable "get_pub_ip_vpc0" {
   type = map
@@ -87,9 +58,6 @@ variable "get_pub_ip_vpc0" {
   }
 }
 variable "vpc0_cidr" {
-  default = "192.168.33.0/24"
-}
-variable "internal_acc_cidr" {
   default = "192.168.33.0/24"
 }
 variable "database_priv_ip" {
@@ -112,6 +80,9 @@ variable "frontend2_priv_ip" {
 }
 variable "frontend_balancer_priv_ip" {
   default = "192.168.33.250"
+}
+variable "bamboo_priv_ip" {
+  default = "192.168.33.251"
 }
 variable "common_tags" {
   type = map

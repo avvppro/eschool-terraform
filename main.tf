@@ -18,7 +18,7 @@ resource "aws_instance" "database" {
   instance_type = lookup(var.instance_type, var.stage) 
   availability_zone = data.aws_availability_zones.available.names[0]
   security_groups = [aws_security_group.for_database.id]
-  subnet_id       = aws_subnet.internal_access.id
+  subnet_id       = aws_subnet.internal.id
   private_ip      = var.database_priv_ip
   user_data       = file("db_vm.sh")
   key_name        = "avvppro-Frankfurt-key"
@@ -31,7 +31,7 @@ resource "aws_instance" "backend1" {
   instance_type = lookup(var.instance_type, var.stage) 
   availability_zone = data.aws_availability_zones.available.names[0]
   security_groups = [aws_security_group.for_backend.id]
-  subnet_id       = aws_subnet.internal_access.id
+  subnet_id       = aws_subnet.internal.id
   private_ip      = var.backend1_priv_ip
   user_data       = file("be_vm.sh")
   key_name        = "avvppro-Frankfurt-key"
@@ -44,7 +44,7 @@ resource "aws_instance" "backend2" {
   instance_type = lookup(var.instance_type, var.stage) 
   availability_zone = data.aws_availability_zones.available.names[0]
   security_groups = [aws_security_group.for_backend.id]
-  subnet_id       = aws_subnet.internal_access.id
+  subnet_id       = aws_subnet.internal.id
   private_ip      = var.backend2_priv_ip
   user_data       = file("be_vm.sh")
   key_name        = "avvppro-Frankfurt-key"
@@ -56,8 +56,8 @@ resource "aws_instance" "be_balancer" {
   ami           = data.aws_ami.latest_amazon_linux.id
   instance_type = lookup(var.instance_type, var.stage) 
   availability_zone = data.aws_availability_zones.available.names[0]
-  security_groups = [aws_security_group.for_proxy.id]
-  subnet_id       = aws_subnet.internal_access.id
+  security_groups = [aws_security_group.for_balancer.id]
+  subnet_id       = aws_subnet.internal.id
   private_ip      = var.backend_balancer_priv_ip
   user_data       = file("be_balancer_vm.sh")
   key_name        = "avvppro-Frankfurt-key"
@@ -67,10 +67,10 @@ resource "aws_instance" "be_balancer" {
 #----------------------------instance frontend1----------------------------------------------
 resource "aws_instance" "frontend1" {
   ami           = data.aws_ami.latest_amazon_linux.id
-  instance_type = "t2.small" 
+  instance_type = lookup(var.instance_type, var.stage)
   availability_zone = data.aws_availability_zones.available.names[0]
   security_groups = [aws_security_group.for_frontend.id]
-  subnet_id       = aws_subnet.internal_access.id
+  subnet_id       = aws_subnet.internal.id
   private_ip      = var.frontend1_priv_ip
   user_data       = file("fe_vm.sh")
   key_name        = "avvppro-Frankfurt-key"
@@ -80,10 +80,10 @@ resource "aws_instance" "frontend1" {
 #----------------------------instance frontend2----------------------------------------------
 resource "aws_instance" "frontend2" {
   ami           = data.aws_ami.latest_amazon_linux.id
-  instance_type = "t2.small" 
+  instance_type = lookup(var.instance_type, var.stage)
   availability_zone = data.aws_availability_zones.available.names[0]
   security_groups = [aws_security_group.for_frontend.id]
-  subnet_id       = aws_subnet.internal_access.id
+  subnet_id       = aws_subnet.internal.id
   private_ip      = var.frontend2_priv_ip
   user_data       = file("fe_vm.sh")
   key_name        = "avvppro-Frankfurt-key"
@@ -95,11 +95,24 @@ resource "aws_instance" "fe_balancer" {
   ami           = data.aws_ami.latest_amazon_linux.id
   instance_type = lookup(var.instance_type, var.stage) 
   availability_zone = data.aws_availability_zones.available.names[0]
-  security_groups = [aws_security_group.for_proxy.id]
-  subnet_id       = aws_subnet.internal_access.id
+  security_groups = [aws_security_group.for_balancer.id]
+  subnet_id       = aws_subnet.internal.id
   private_ip      = var.frontend_balancer_priv_ip
   user_data       = file("fe_balancer_vm.sh")
   key_name        = "avvppro-Frankfurt-key"
   tags = merge(var.common_tags, map("Stage", "${var.stage}"), map("Name", "FE-balancer"))
+
+}
+#----------------------------instance bamboo----------------------------------------------
+resource "aws_instance" "bamboo" {
+  ami           = data.aws_ami.latest_amazon_linux.id
+  instance_type = lookup(var.instance_type_bamboo, var.stage) 
+  availability_zone = data.aws_availability_zones.available.names[0]
+  security_groups = [aws_security_group.for_bamboo.id]
+  subnet_id       = aws_subnet.internal.id
+  private_ip      = var.bamboo_priv_ip
+  user_data       = file("bamboo_vm.sh")
+  key_name        = "avvppro-Frankfurt-key"
+  tags = merge(var.common_tags, map("Stage", "${var.stage}"), map("Name", "Bamboo"))
 
 }

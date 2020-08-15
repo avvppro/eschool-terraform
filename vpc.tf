@@ -21,20 +21,20 @@ resource "aws_main_route_table_association" "a" {
   route_table_id = aws_route_table.route0.id
 }
 
-resource "aws_subnet" "internal_access" {
+resource "aws_subnet" "internal" {
   vpc_id                  = aws_vpc.vpc0.id
   map_public_ip_on_launch = lookup(var.get_pub_ip_vpc0, var.stage)
-  cidr_block              = var.internal_acc_cidr
+  cidr_block              = var.vpc0_cidr
   availability_zone       = data.aws_availability_zones.available.names[0]
   tags                    = merge(var.common_tags, map("Stage", "${var.stage}"), map("Name", "subnet for zone 0"))
 }
 #-----------------------------eip association for BE balancer-----------------------------------
 resource "aws_eip_association" "eip_assoc_be" {
   instance_id   = aws_instance.be_balancer.id
-  allocation_id = lookup(var.allocation_id_be_balancer_ip, var.stage)
+  allocation_id = var.allocation_id_be_balancer_ip
 }
 #-----------------------------eip association for FE balancer-----------------------------------
 resource "aws_eip_association" "eip_assoc_fe" {
   instance_id   = aws_instance.fe_balancer.id
-  allocation_id = lookup(var.allocation_id_fe_balancer_ip, var.stage)
+  allocation_id = var.allocation_id_fe_balancer_ip
 }
