@@ -1,6 +1,6 @@
 .terraform/**
 terraform.*
-
+./ssh_keys/*
 
 
 
