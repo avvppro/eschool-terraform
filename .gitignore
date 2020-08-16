@@ -1,6 +1,3 @@
 .terraform/**
 terraform.*
-./ssh_keys/*
-
-
-
+avvppro-Frankfurt-key.pem

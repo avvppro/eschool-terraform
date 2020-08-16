@@ -23,7 +23,6 @@ resource "aws_instance" "database" {
   user_data       = file("db_vm.sh")
   key_name        = "avvppro-Frankfurt-key"
   tags = merge(var.common_tags, map("Stage", "${var.stage}"), map("Name", "Database"))
-
 }
 #----------------------------instance backend1----------------------------------------------
 resource "aws_instance" "backend1" {
@@ -62,7 +61,6 @@ resource "aws_instance" "be_balancer" {
   user_data       = file("be_balancer_vm.sh")
   key_name        = "avvppro-Frankfurt-key"
   tags = merge(var.common_tags, map("Stage", "${var.stage}"), map("Name", "BE-balancer"))
-
 }
 #----------------------------instance frontend1----------------------------------------------
 resource "aws_instance" "frontend1" {
@@ -101,7 +99,6 @@ resource "aws_instance" "fe_balancer" {
   user_data       = file("fe_balancer_vm.sh")
   key_name        = "avvppro-Frankfurt-key"
   tags = merge(var.common_tags, map("Stage", "${var.stage}"), map("Name", "FE-balancer"))
-
 }
 #----------------------------instance bamboo----------------------------------------------
 resource "aws_instance" "bamboo" {
@@ -114,5 +111,4 @@ resource "aws_instance" "bamboo" {
   user_data       = file("bamboo_vm.sh")
   key_name        = "avvppro-Frankfurt-key"
   tags = merge(var.common_tags, map("Stage", "${var.stage}"), map("Name", "Bamboo"))
-
 }

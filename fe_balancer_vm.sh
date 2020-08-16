@@ -14,7 +14,7 @@ nginx_config() {
     }
     server {
         listen       80;
-        server_name  avvppro.xyz www.avvppro.xyz;
+        server_name  18.159.15.164;
         location /{
             proxy_pass http://frontend;
         }

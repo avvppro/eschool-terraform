@@ -1,14 +1,20 @@
 #!/bin/bash
-set_variables() {
-    database_ip="192.168.33.11"
-}
 software_install() {
     sudo yum update -y
-    sudo yum install git wget java-1.8.0-openjdk-devel -y
-    wget https://www-us.apache.org/dist/maven/maven-3/3.6.3/binaries/apache-maven-3.6.3-bin.tar.gz -P /tmp
-    sudo tar xf /tmp/apache-maven-3.6.3-bin.tar.gz -C /opt
-    sudo ln -s /opt/apache-maven-3.6.3/ /opt/maven
+    sudo yum install mc java-1.8.0-openjdk-devel -y
 }
+software_install
+
+
+
+
+
+
+
+ #   wget https://www-us.apache.org/dist/maven/maven-3/3.6.3/binaries/apache-maven-3.6.3-bin.tar.gz -P /tmp
+  #  sudo tar xf /tmp/apache-maven-3.6.3-bin.tar.gz -C /opt
+  #  sudo ln -s /opt/apache-maven-3.6.3/ /opt/maven
+
 server_config() {
     cat <<_EOF >maven.sh
     export JAVA_HOME=/usr/lib/jvm/jre-openjdk
@@ -31,9 +37,5 @@ backend_config() {
     sed -i "s/my.backend_address/$local_ip/g" ./eSchool/src/main/resources/application-production.properties
     cd eSchool/
     mvn clean package -DskipTests
-    java -jar target/eschool.jar &
+    java -jar /tmp/target/eschool.jar &
 }
-set_variables
-software_install
-server_config
-backend_config

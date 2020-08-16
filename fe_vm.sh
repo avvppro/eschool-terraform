@@ -1,14 +1,14 @@
 #!/bin/bash
 set_variables() {
-    backend_balancer_ip="52.29.180.149"
+    backend_balancer_ip="18.159.10.163"
 }
 software_install() {
     sudo yum update -y
-    curl -sL https://rpm.nodesource.com/setup_10.x | sudo bash -
-    sudo yum install httpd git nodejs -y
-    sudo yum install gcc-c++ make -y
-    curl -sL https://dl.yarnpkg.com/rpm/yarn.repo | sudo tee /etc/yum.repos.d/yarn.repo
-    sudo yum install yarn -y
+   # curl -sL https://rpm.nodesource.com/setup_10.x | sudo bash -
+    sudo yum install mc httpd -y #nodejs git -y
+   # sudo yum install gcc-c++ make -y
+   # curl -sL https://dl.yarnpkg.com/rpm/yarn.repo | sudo tee /etc/yum.repos.d/yarn.repo
+   # sudo yum install yarn -y
     }
 frontend_config() {
     sudo setenforce 0
@@ -23,8 +23,10 @@ frontend_config() {
     sudo mv .htaccess dist/eSchool/
 }
 httpd_config() {
-    sudo chown apache:apache ./dist/eSchool/*
-    sudo mv ./dist/eSchool/ /var/www/
+    sudo setenforce 0
+    sudo sed -i 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/selinux/config
+    #sudo chown apache:apache ./dist/eSchool/*
+    #sudo mv ./dist/eSchool/ /var/www/
     sudo mkdir /etc/httpd/sites-available /etc/httpd/sites-enabled
     sudo chmod 666 /etc/httpd/conf/httpd.conf /etc/httpd/sites-*
     sudo echo "IncludeOptional sites-enabled/*.conf" >>/etc/httpd/conf/httpd.conf
@@ -46,7 +48,4 @@ sudo chown apache:apache /var/log/httpd/eschool
 sudo ln -s /etc/httpd/sites-available/eschool.conf /etc/httpd/sites-enabled/eschool.conf
 sudo systemctl restart httpd
 }
-set_variables
 software_install
-frontend_config
-httpd_config

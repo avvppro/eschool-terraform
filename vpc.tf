@@ -23,7 +23,7 @@ resource "aws_main_route_table_association" "a" {
 
 resource "aws_subnet" "internal" {
   vpc_id                  = aws_vpc.vpc0.id
-  map_public_ip_on_launch = lookup(var.get_pub_ip_vpc0, var.stage)
+  map_public_ip_on_launch = true
   cidr_block              = var.vpc0_cidr
   availability_zone       = data.aws_availability_zones.available.names[0]
   tags                    = merge(var.common_tags, map("Stage", "${var.stage}"), map("Name", "subnet for zone 0"))
@@ -37,4 +37,9 @@ resource "aws_eip_association" "eip_assoc_be" {
 resource "aws_eip_association" "eip_assoc_fe" {
   instance_id   = aws_instance.fe_balancer.id
   allocation_id = var.allocation_id_fe_balancer_ip
+}
+#-----------------------------eip association for Bamboo-----------------------------------
+resource "aws_eip_association" "eip_assoc_bamboo" {
+  instance_id   = aws_instance.bamboo.id
+  allocation_id = var.allocation_id_bamboo_ip
 }

@@ -27,7 +27,7 @@ variable "instance_type" {
 }
 variable "instance_type_bamboo" {
   default = {
-    "development" = "t2.small"
+    "development" = "t2.medium"
     "testing"     = "t2.small"
     "staging"     = "t3.small"
     "production"  = "t3.small"
@@ -40,22 +40,13 @@ variable "allow_ports_backend" {
   default =  ["22", "8080"]
 }
 variable "allow_ports_frontend" {
-  default =  ["22", "80", "443"]
+  default =  ["22", "80"]
 }
 variable "allow_ports_balancer" {
   default =  ["22", "80", "443"]
 }
 variable "allow_ports_bamboo" {
-  default =  ["22", "80", "8085"]
-}
-variable "get_pub_ip_vpc0" {
-  type = map
-  default = {
-    "development" = true
-    "testing"     = true
-    "staging"     = false
-    "production"  = false
-  }
+  default =  ["22", "80", "443"]
 }
 variable "vpc0_cidr" {
   default = "192.168.33.0/24"
