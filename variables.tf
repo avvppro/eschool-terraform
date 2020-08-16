@@ -21,17 +21,12 @@ variable "instance_type" {
   default = {
     "development" = "t2.micro"
     "testing"     = "t2.micro"
-    "staging"     = "t3.micro"
-    "production"  = "t3.micro"
+    "staging"     = "t2.small"
+    "production"  = "t2.small"
   }
 }
 variable "instance_type_bamboo" {
-  default = {
-    "development" = "t2.medium"
-    "testing"     = "t2.small"
-    "staging"     = "t3.small"
-    "production"  = "t3.small"
-  }
+  default = "t2.medium"
 }
 variable "allow_ports_database" {
   default =  ["22", "3306"]
@@ -46,7 +41,7 @@ variable "allow_ports_balancer" {
   default =  ["22", "80", "443"]
 }
 variable "allow_ports_bamboo" {
-  default =  ["22", "80", "443"]
+  default =  ["22", "80", "443", "8085"]
 }
 variable "vpc0_cidr" {
   default = "192.168.33.0/24"

@@ -103,7 +103,7 @@ resource "aws_instance" "fe_balancer" {
 #----------------------------instance bamboo----------------------------------------------
 resource "aws_instance" "bamboo" {
   ami           = data.aws_ami.latest_amazon_linux.id
-  instance_type = lookup(var.instance_type_bamboo, var.stage) 
+  instance_type = var.instance_type_bamboo
   availability_zone = data.aws_availability_zones.available.names[0]
   security_groups = [aws_security_group.for_bamboo.id]
   subnet_id       = aws_subnet.internal.id

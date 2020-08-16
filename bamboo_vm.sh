@@ -2,7 +2,9 @@
 software_install() {
 sudo yum update -y
 sudo rpm -Uvh http://nginx.org/packages/centos/7/noarch/RPMS/nginx-release-centos-7-0.el7.ngx.noarch.rpm
-sudo yum install mc git httpd wget java-1.8.0-openjdk-devel nginx setroubleshoot-server -y
+curl -sL https://rpm.nodesource.com/setup_10.x | sudo bash -
+curl -sL https://dl.yarnpkg.com/rpm/yarn.repo | sudo tee /etc/yum.repos.d/yarn.repo
+sudo yum install mc git httpd wget nodejs gcc-c++ make yarn java-1.8.0-openjdk-devel nginx setroubleshoot-server -y
 wget https://www-us.apache.org/dist/maven/maven-3/3.6.3/binaries/apache-maven-3.6.3-bin.tar.gz -P /tmp
 sudo tar xf /tmp/apache-maven-3.6.3-bin.tar.gz -C /opt
 sudo ln -s /opt/apache-maven-3.6.3/ /opt/maven

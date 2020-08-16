@@ -1,32 +1,11 @@
 #!/bin/bash
-set_variables() {
-    backend_balancer_ip="18.159.10.163"
-}
 software_install() {
     sudo yum update -y
-   # curl -sL https://rpm.nodesource.com/setup_10.x | sudo bash -
-    sudo yum install mc httpd -y #nodejs git -y
-   # sudo yum install gcc-c++ make -y
-   # curl -sL https://dl.yarnpkg.com/rpm/yarn.repo | sudo tee /etc/yum.repos.d/yarn.repo
-   # sudo yum install yarn -y
+    sudo yum install mc httpd -y 
     }
-frontend_config() {
-    sudo setenforce 0
-    sudo sed -i 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/selinux/config
-    git clone https://github.com/avvppro/final_project.git
-    sed -i "s/192.168.33.200/$backend_balancer_ip/g" ./final_project/src/app/services/token-interceptor.service.ts 
-    cd final_project/
-    sudo npm install -g @angular/cli@7.0.7 
-    sudo npm install --save-dev  --unsafe-perm node-sass
-    sudo npm install
-    sudo ng build --prod
-    sudo mv .htaccess dist/eSchool/
-}
 httpd_config() {
     sudo setenforce 0
-    sudo sed -i 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/selinux/config
-    #sudo chown apache:apache ./dist/eSchool/*
-    #sudo mv ./dist/eSchool/ /var/www/
+    sudo sed -i 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/selinux/config 
     sudo mkdir /etc/httpd/sites-available /etc/httpd/sites-enabled
     sudo chmod 666 /etc/httpd/conf/httpd.conf /etc/httpd/sites-*
     sudo echo "IncludeOptional sites-enabled/*.conf" >>/etc/httpd/conf/httpd.conf
@@ -46,6 +25,20 @@ sudo chmod 644 /etc/httpd/conf/httpd.conf /etc/httpd/sites-*
 sudo mkdir /var/log/httpd/eschool
 sudo chown apache:apache /var/log/httpd/eschool
 sudo ln -s /etc/httpd/sites-available/eschool.conf /etc/httpd/sites-enabled/eschool.conf
-sudo systemctl restart httpd
+}
+build_script () {
+cat <<_EOF >/tmp/eschool.sh
+    cd /tmp
+    tar -xzvf ./artefact.tar.gz
+    sudo chown -R apache. /tmp/dist/eSchool
+    sudo chmod 444 /tmp/dist/eSchool/.htaccess
+    sudo rm -rf /var/www/eSchool
+    sudo mv /tmp/dist/eSchool/ /var/www/
+    sudo systemctl restart httpd 
+_EOF
+    sudo mv /tmp/eschool.sh /var/www/
+    sudo chmod 755 /var/www/eschool.sh
 }
 software_install
+httpd_config
+build_script
