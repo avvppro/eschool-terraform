@@ -2,8 +2,9 @@
 software_install() {
     sudo yum update -y
     sudo yum install mc httpd -y 
-    }
+}
 httpd_config() {
+    sudo systemctl enable httpd
     sudo setenforce 0
     sudo sed -i 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/selinux/config 
     sudo mkdir /etc/httpd/sites-available /etc/httpd/sites-enabled
