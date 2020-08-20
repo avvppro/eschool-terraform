@@ -36,7 +36,7 @@ resource "aws_instance" "backend1" {
   key_name        = "avvppro-Frankfurt-key"
   tags = merge(var.common_tags, map("Stage", "${var.stage}"), map("Name", "Backend1"))
 
-}/*
+}
 #----------------------------instance backend2----------------------------------------------
 resource "aws_instance" "backend2" {
   ami           = data.aws_ami.latest_amazon_linux.id
@@ -49,7 +49,7 @@ resource "aws_instance" "backend2" {
   key_name        = "avvppro-Frankfurt-key"
   tags = merge(var.common_tags, map("Stage", "${var.stage}"), map("Name", "Backend2"))
 
-}*/
+}
 #----------------------------instance be balancer----------------------------------------------
 resource "aws_instance" "be_balancer" {
   ami           = data.aws_ami.latest_amazon_linux.id
@@ -74,7 +74,7 @@ resource "aws_instance" "frontend1" {
   key_name        = "avvppro-Frankfurt-key"
   tags = merge(var.common_tags, map("Stage", "${var.stage}"), map("Name", "Frontend1"))
 
-}/*
+}
 #----------------------------instance frontend2----------------------------------------------
 resource "aws_instance" "frontend2" {
   ami           = data.aws_ami.latest_amazon_linux.id
@@ -87,7 +87,7 @@ resource "aws_instance" "frontend2" {
   key_name        = "avvppro-Frankfurt-key"
   tags = merge(var.common_tags, map("Stage", "${var.stage}"), map("Name", "Frontend2"))
 
-}*/
+}
 #----------------------------instance fe balancer----------------------------------------------
 resource "aws_instance" "fe_balancer" {
   ami           = data.aws_ami.latest_amazon_linux.id
