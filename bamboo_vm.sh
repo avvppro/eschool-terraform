@@ -40,6 +40,8 @@ bamboo_setup () {
     sudo /usr/sbin/useradd --create-home --home-dir /usr/local/bamboo --shell /bin/bash bamboo
     sudo mkdir /etc/bamboo/
     sudo echo bamboo.home=/etc/bamboo/ >> /root/atlassian-bamboo-7.1.1/atlassian-bamboo/WEB-INF/classes/bamboo-init.properties
+    cd /tmp
+    git clone https://github.com/avvppro/eschool-terraform.git
     }
 bamboo_service () {
     cat <<_EOX >/tmp/bamboo.service
