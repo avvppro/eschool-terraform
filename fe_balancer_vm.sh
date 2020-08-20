@@ -13,7 +13,12 @@ nginx_config() {
         server 192.168.33.202:80;
     }
     server {
+<<<<<<< HEAD
         server_name  avvppro.xyz www.avvppro.xyz;
+=======
+        listen       80;
+        server_name  18.159.15.164;
+>>>>>>> bambooCI
         location /{
             proxy_pass http://frontend;
         }

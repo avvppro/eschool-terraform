@@ -1,39 +1,39 @@
 #!/bin/bash
-set_variables() {
-    database_ip="192.168.33.11"
-}
 software_install() {
     sudo yum update -y
-    sudo yum install git wget java-1.8.0-openjdk-devel -y
-    wget https://www-us.apache.org/dist/maven/maven-3/3.6.3/binaries/apache-maven-3.6.3-bin.tar.gz -P /tmp
-    sudo tar xf /tmp/apache-maven-3.6.3-bin.tar.gz -C /opt
-    sudo ln -s /opt/apache-maven-3.6.3/ /opt/maven
+    sudo yum install polkit mc java-1.8.0-openjdk-devel -y
+    sudo mkdir /etc/eschool-backend/
 }
-server_config() {
-    cat <<_EOF >maven.sh
-    export JAVA_HOME=/usr/lib/jvm/jre-openjdk
-    export M2_HOME=/opt/maven
-    export MAVEN_HOME=/opt/maven
-    export PATH=/opt/apache-maven-3.6.3/bin:$PATH
+eschool_service () {
+    cat <<_EOX >/tmp/eschool.service
+[Unit]
+Description=Eschool backend startup script
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/bin/java -jar  /etc/eschool-backend/eschool.jar 
+Restart=always
+User=root
+Group=root
+
+[Install]
+WantedBy=multi-user.target
+_EOX
+    sudo mv /tmp/eschool.service /etc/systemd/system/
+    sudo systemctl enable eschool.service
+    sudo systemctl start eschool.service
+}
+cd_script () {
+    cat <<_EOF >/tmp/eschool.sh
+#!/bin/bash
+sudo systemctl stop eschool.service
+sudo mv /tmp/eschool.jar /etc/eschool-backend
+sudo systemctl start eschool.service
 _EOF
-    chmod 777 maven.sh
-    sudo mv maven.sh /etc/profile.d/maven.sh
-    source /etc/profile.d/maven.sh
-    sudo setenforce 0
-    sudo sed -i 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/selinux/config
+    sudo mv /tmp/eschool.sh /etc/eschool-backend
+    sudo chmod 755 /etc/eschool-backend/eschool.sh
 }
-backend_config() {
-    local_ip=$(ip addr show eth0 | sed -En 's/127.0.0.1//;s/.*inet (addr:)?(([0-9]*\.){3}[0-9]*).*/\2/p')
-    git clone  https://github.com/avvppro/eSchool.git
-    sed -i "s/my.db_address/$database_ip/g" ./eSchool/src/main/resources/application.properties
-    sed -i "s/my.backend_address/$local_ip/g" ./eSchool/src/main/resources/application.properties
-    sed -i "s/my.db_address/$database_ip/g" ./eSchool/src/main/resources/application-production.properties
-    sed -i "s/my.backend_address/$local_ip/g" ./eSchool/src/main/resources/application-production.properties
-    cd eSchool/
-    mvn clean package -DskipTests
-    java -jar target/eschool.jar &
-}
-set_variables
 software_install
-server_config
-backend_config
+eschool_service
+cd_script
