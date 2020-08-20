@@ -1,32 +1,7 @@
 #!/bin/bash
-<<<<<<< HEAD
-set_variables() {
-    backend_balancer_address="backend-eschool.tk"
-}
-software_install() {
-    sudo yum update -y
-    curl -sL https://rpm.nodesource.com/setup_10.x | sudo bash -
-    sudo yum install httpd git nodejs -y
-    sudo yum install gcc-c++ make -y
-    curl -sL https://dl.yarnpkg.com/rpm/yarn.repo | sudo tee /etc/yum.repos.d/yarn.repo
-    sudo yum install yarn -y
-    }
-frontend_config() {
-    sudo setenforce 0
-    sudo sed -i 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/selinux/config
-    git clone https://github.com/avvppro/final_project.git
-    sed -i "s%http://192.168.33.200%https://$backend_balancer_address%g" ./final_project/src/app/services/token-interceptor.service.ts 
-    cd final_project/
-    sudo npm install -g @angular/cli@7.0.7 
-    sudo npm install --save-dev  --unsafe-perm node-sass
-    sudo npm install
-    sudo ng build --prod
-    sudo mv .htaccess dist/eSchool/
-=======
 software_install() {
     sudo yum update -y
     sudo yum install mc httpd -y 
->>>>>>> bambooCI
 }
 httpd_config() {
     sudo systemctl enable httpd
