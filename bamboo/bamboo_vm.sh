@@ -65,3 +65,8 @@ software_install
 nginx_setup
 bamboo_setup
 bamboo_service
+
+# for import after key insert do:
+# git clone https://github.com/avvppro/eschool-terraform.git
+# sudo mv ./eschool-terraform/export_atlassianbamboo_avvppro_1.zip  /etc/bamboo/backups
+# import backup & login vs misha qazwsx
