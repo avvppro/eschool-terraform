@@ -43,7 +43,7 @@ tags = merge(data.terraform_remote_state.vpc_eschool.outputs.common_tags, map("S
 }
 #----------------------------instance bamboo----------------------------------------------
 resource "aws_instance" "bamboo" {
-  ami           = data.terraform_remote_state.vpc_eschool.outputs.ami.id
+  ami           = data.terraform_remote_state.vpc_eschool.outputs.ami
   instance_type = var.instance_type_bamboo
   availability_zone = data.terraform_remote_state.vpc_eschool.outputs.zone_name
   security_groups = [aws_security_group.for_bamboo.id]

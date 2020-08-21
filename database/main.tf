@@ -43,7 +43,7 @@ resource "aws_security_group" "for_database" {
 }
 #----------------------------instance database----------------------------------------------
 resource "aws_instance" "database" {
-  ami           = data.terraform_remote_state.vpc_eschool.outputs.ami.id
+  ami           = data.terraform_remote_state.vpc_eschool.outputs.ami
   instance_type = var.instance_type
   availability_zone = data.terraform_remote_state.vpc_eschool.outputs.zone_name
   security_groups = [aws_security_group.for_database.id]

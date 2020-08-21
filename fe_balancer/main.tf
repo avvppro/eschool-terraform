@@ -43,7 +43,7 @@ tags = merge(data.terraform_remote_state.vpc_eschool.outputs.common_tags, map("S
 }
 #----------------------------instance fe balancer----------------------------------------------
 resource "aws_instance" "fe_balancer" {
-  ami           = data.terraform_remote_state.vpc_eschool.outputs.ami.id
+  ami           = data.terraform_remote_state.vpc_eschool.outputs.ami
   instance_type = var.instance_type
   availability_zone = data.terraform_remote_state.vpc_eschool.outputs.zone_name
   security_groups = [aws_security_group.for_fe_balancer.id]

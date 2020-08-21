@@ -2,7 +2,7 @@ output "region" {
   value = var.region
 }
 output "ami" {
-  value = aws_ami.latest_amazon_linux.id
+  value = data.aws_ami.latest_amazon_linux.id
 }
 output "stage" {
   value = var.stage

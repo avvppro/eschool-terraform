@@ -43,7 +43,7 @@ resource "aws_security_group" "for_frontend" {
 }
 #----------------------------instance frontend1----------------------------------------------
 resource "aws_instance" "frontend1" {
-  ami           = data.terraform_remote_state.vpc_eschool.outputs.ami.id
+  ami           = data.terraform_remote_state.vpc_eschool.outputs.ami
   instance_type = var.instance_type
   availability_zone = data.terraform_remote_state.vpc_eschool.outputs.zone_name
   security_groups = [aws_security_group.for_frontend.id]
@@ -55,7 +55,7 @@ resource "aws_instance" "frontend1" {
 }
 #----------------------------instance frontend2----------------------------------------------
 resource "aws_instance" "frontend2" {
-  ami           = data.terraform_remote_state.vpc_eschool.outputs.ami.id
+  ami           = data.terraform_remote_state.vpc_eschool.outputs.ami
   instance_type = var.instance_type
   availability_zone = data.terraform_remote_state.vpc_eschool.outputs.zone_name
   security_groups = [aws_security_group.for_frontend.id]
